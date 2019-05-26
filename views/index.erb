@@ -2,11 +2,29 @@
   <head></head>
   <body>
     <p>
-      <%=prompt%><br/>
+      Guesses left: <%= guesses_left %>
+      <br/>
+      Guessed letters: <%= guessed_letters%>
+      <br/>
+      Answer board: <%= answer_board%>
+      <br/>
+      Enter a single letter.
+      <br/>
+      <%="Enter a valid input" if error%>
+      <br/>
+      <%=if cheat == true
+      word_to_guess
+      end%>
     </p>
     <form>
     <input type= "text" name= 'guess'/>
     <input type= 'submit' value= 'guess!' />
     </form>
+    <p>
+    <%=if game_over == true
+    win ? "You guessed #{word_to_guess} correctly!" : "You lose, the word was #{word_to_guess}!"
+    end
+    %>
+    </p>
   </body>
 </html>
