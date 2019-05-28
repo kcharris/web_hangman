@@ -9,20 +9,11 @@ enable :sessions
 game = Game.new
 game.new_game
 
-post "/" do
-  game.guesses_left = session[:guesses_left]
-  game.guessed_letters = session[:guessed_letters]
-  game.answer_board = session[:answer_board]
-  game.word_to_guess = session[:word_to_guess]
-  game.game_over = session[:game_over]
-  game.win = session[:win]
-end
-
 get "/" do
   if params["guess"] != nil
     game.input_processor(params["guess"])
   end
-  unless params["guess"] =~ /^[a-zA-Z]$/
+  unless params["guess"] =~ /^[a-zA-Z]$/ || ""
     @error = true
   else
     @error = false
@@ -32,14 +23,19 @@ get "/" do
   else
     cheat = false
   end
-  session[:guesses_left] = game.guesses_left
-  session[:guessed_letters] = game.guessed_letters
-  session[:answer_board] = game.answer_board
-  session[:word_to_guess] = game.word_to_guess
-  session[:game_over] = game.game_over
-  session[:win] = game.win
+  if game.game_over
+    redirect "/result"
+  end
   erb :index, :locals => {:guesses_left => game.guesses_left,
                           :error => @error, :guessed_letters => game.guessed_letters,
                           :answer_board => game.answer_board, :word_to_guess => game.word_to_guess,
                           :game_over => game.game_over, :win => game.win, :cheat => cheat}
+end
+get "/result" do
+  erb :result, :locals => {game_over: game.game_over, win: game.win, word_to_guess: game.word_to_guess}
+end
+
+get "/newgame" do
+  game.new_game
+  redirect "/"
 end

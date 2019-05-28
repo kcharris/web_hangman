@@ -1,0 +1,16 @@
+<html>
+  <head></head>
+  <body>
+    <p>
+<%=if game_over == true
+    win ? "You guessed #{word_to_guess} correctly!" : "You lose, the word was #{word_to_guess}!"
+    end
+%>
+    </p>
+    <a href= "http://localhost:4567/newgame">
+    <input type= 'button' value= 'New Game!'/>
+    </a>
+    <p>
+    </p>
+  </body>
+</html>
